@@ -397,7 +397,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+                // 1. Меняем Automatic на Manual
+				CODE_SIGN_STYLE = Manual;
+                // 2. Добавляем эти 3 строки для отключения подписи
+                CODE_SIGNING_REQUIRED = NO;
+                CODE_SIGNING_ALLOWED = NO;
+                CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -509,7 +514,13 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+                // --- НАЧАЛО ИЗМЕНЕНИЙ ---
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+                CODE_SIGN_STYLE = Manual;
+                CODE_SIGNING_ALLOWED = NO;
+                CODE_SIGNING_REQUIRED = NO;
+                // --- КОНЕЦ ИЗМЕНЕНИЙ ---
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -562,6 +573,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+                // --- НАЧАЛО ИЗМЕНЕНИЙ ---
+                CODE_SIGN_STYLE = Manual;
+                CODE_SIGNING_REQUIRED = NO;
+                CODE_SIGNING_ALLOWED = NO;
+                CODE_SIGN_IDENTITY = "";
+                // --- КОНЕЦ ИЗМЕНЕНИЙ ---
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
