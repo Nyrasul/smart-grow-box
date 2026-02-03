@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "146513060240",
+    "firebase_url": "https://smartgrowbox-1f7e8-default-rtdb.firebaseio.com",
+    "project_id": "smartgrowbox-1f7e8",
+    "storage_bucket": "smartgrowbox-1f7e8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146513060240:android:7ef861e8e7b43bec391315",
+        "android_client_info": {
+          "package_name": "com.example.tree"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAvbh7jaNJH6T1vM0wG6zKn-3ocn4RoUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,49 @@
+name: tree
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.8
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # --- UI Компоненты ---
+  cupertino_icons: ^1.0.8
+  font_awesome_flutter: ^10.6.0 # Красивые иконки
+  google_fonts: ^6.1.0 # Красивые шрифты
+
+  image: ^4.1.3 # Для подготовки картинки (resize)
+
+  # --- Связь с миром (IoT) ---
+  firebase_core: ^2.24.2
+  firebase_database: ^10.4.0
+  provider: ^6.1.1 # Управление состоянием (Мозги приложения)
+
+  # --- Видео и Камера ---
+  webview_flutter: ^4.7.0 # Видео с ESP32
+  image_picker: ^1.0.7 # Достать фото с камеры/галереи
+
+  # --- Искусственный Интеллект (AI) ---
+  # Для твоих локальных моделей (Disease & Maintenance)
+  tflite_flutter: ^0.10.4
+  # Для чата с Агрономом (Google Gemini)
+  google_generative_ai: ^0.4.0
+
+  # Утилиты
+  intl: ^0.19.0 # Форматирование дат
+  shared_preferences: ^2.2.2 # Сохранять мелкие настройки на телефоне
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+assets:
+  - assets/model/model.tflite
+  - assets/model/labels.txt
