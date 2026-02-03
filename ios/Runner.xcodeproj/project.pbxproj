@@ -397,9 +397,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-                // 1. Меняем Automatic на Manual
 				CODE_SIGN_STYLE = Manual;
-                // 2. Добавляем эти 3 строки для отключения подписи
                 CODE_SIGNING_REQUIRED = NO;
                 CODE_SIGNING_ALLOWED = NO;
                 CODE_SIGN_IDENTITY = "";
