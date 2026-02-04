@@ -28,16 +28,14 @@ jobs:
       - name: 🔨 Force Build (Bypass Flutter Tool)
         run: |
           echo "🚀 Starting raw xcodebuild..."
-          
-          # Переходим в папку iOS
           cd ios
           
-          # Запускаем сборку напрямую через xcodebuild.
-          # Это вызывает скрипт Flutter внутри Xcode, но обходит проверку подписи самого Flutter.
+          # Указываем конкретную папку для вывода (build_output), чтобы не искать по всей системе
           xcodebuild -workspace Runner.xcworkspace \
             -scheme Runner \
             -configuration Release \
             -sdk iphoneos \
+            -derivedDataPath build_output \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
@@ -45,22 +43,22 @@ jobs:
             
       - name: 📦 Package IPA
         run: |
-          # Создаем структуру для IPA
+          echo "📦 Packaging..."
           mkdir Payload
           
-          # Ищем собранное приложение (путь может отличаться, ищем через find)
-          APP_PATH=$(find ios/build/Release-iphoneos -name "Runner.app" | head -n 1)
+          # Теперь мы точно знаем, где лежит приложение
+          APP_PATH="ios/build_output/Build/Products/Release-iphoneos/Runner.app"
           
-          if [ -z "$APP_PATH" ]; then
-            echo "❌ Error: Runner.app not found!"
+          if [ -d "$APP_PATH" ]; then
+            echo "✅ App found at: $APP_PATH"
+            cp -r "$APP_PATH" Payload/
+            zip -r smart-grow-box.ipa Payload
+          else
+            echo "❌ Error: Runner.app not found at expected path!"
+            echo "🔍 Listing build directory for debugging:"
+            find ios/build_output -maxdepth 4
             exit 1
           fi
-          
-          echo "✅ Found app at: $APP_PATH"
-          cp -r "$APP_PATH" Payload/
-          
-          # Сжимаем
-          zip -r smart-grow-box.ipa Payload
 
       - name: 📤 Upload Artifact
         uses: actions/upload-artifact@v4
