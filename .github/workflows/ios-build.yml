@@ -1,0 +1,65 @@
+name: Build iOS No-Sign
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build_ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          architecture: x64
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: 🛠️ Hack Xcode Project (Disable Signing)
+        run: |
+          echo "🔥 Hacking project.pbxproj..."
+          PBX="ios/Runner.xcodeproj/project.pbxproj"
+          
+          # Удаляем требования команды и провижн профилей
+          sed -i '' '/DevelopmentTeam/d' $PBX
+          sed -i '' '/ProvisioningStyle/d' $PBX
+          sed -i '' '/CODE_SIGN_IDENTITY/d' $PBX
+          sed -i '' '/"CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]"/d' $PBX
+          
+          # Принудительно ставим Manual и отключаем подпись
+          sed -i '' 's/CODE_SIGN_STYLE = .*/CODE_SIGN_STYLE = Manual;/g' $PBX
+          
+          # Вставляем настройки прямо в конфиг Flutter (самый надежный метод)
+          CONFIG="ios/Flutter/Release.xcconfig"
+          echo "" >> $CONFIG
+          echo "CODE_SIGNING_REQUIRED=NO" >> $CONFIG
+          echo "CODE_SIGNING_ALLOWED=NO" >> $CONFIG
+          echo "CODE_SIGN_STYLE=Manual" >> $CONFIG
+          echo "CODE_SIGN_IDENTITY=" >> $CONFIG
+          echo "DEVELOPMENT_TEAM=" >> $CONFIG
+          echo "PROVISIONING_PROFILE_SPECIFIER=" >> $CONFIG
+          
+          echo "✅ Project hacked successfully!"
+
+      - name: 🏗️ Build iOS App (Release)
+        run: |
+          # Собираем без подписи
+          flutter build ios --release --no-codesign
+          
+          # Создаем папку Payload и кладем туда приложение (ручная сборка IPA)
+          mkdir Payload
+          mv build/ios/iphoneos/Runner.app Payload/
+          
+          # Сжимаем в .ipa
+          zip -r Runner.ipa Payload
+
+      - name: 📤 Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: smart-grow-box-ipa
+          path: Runner.ipa
