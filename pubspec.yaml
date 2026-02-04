@@ -28,7 +28,7 @@ dependencies:
 
   # --- Искусственный Интеллект (AI) ---
   # Для твоих локальных моделей (Disease & Maintenance)
-  tflite_flutter: ^0.10.15
+  tflite_flutter: ^0.11.0
   # Для чата с Агрономом (Google Gemini)
   google_generative_ai: ^0.4.0
 
